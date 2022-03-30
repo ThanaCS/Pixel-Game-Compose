@@ -1,10 +1,9 @@
 import R.Graphics.environment01
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -23,18 +22,26 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "Game 01",
         state = rememberWindowState(height = Height.dp, width = Width.dp),
+        resizable = false
     ) {
         gameTheme {
-            Image(bitmap = environment01, "image", Modifier.fillMaxSize())
+            background()
+            ghost()
             onMove()
-            Row(Modifier.fillMaxSize().padding(16.dp), Arrangement.Center) {
-                Text(
-                    text = "LEVEL ONE",
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    style = GameTypography.h3,
-                )
-            }
         }
+    }
+}
+
+@Composable
+fun background() {
+    Image(bitmap = environment01, null)
+    Box(Modifier.fillMaxSize()) {
+        Text(
+            modifier = Modifier.align(Alignment.BottomCenter).padding(60.dp),
+            text = "LEVEL ONE",
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            style = GameTypography.h3
+        )
     }
 }

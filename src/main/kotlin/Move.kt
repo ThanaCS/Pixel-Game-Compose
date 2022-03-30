@@ -1,5 +1,3 @@
-import R.Graphics.characterR
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
@@ -11,7 +9,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -22,32 +19,26 @@ fun onMove() {
     var top by remember { mutableStateOf(topSize) }
 
     Box(Modifier.size(200.dp).padding(0.dp, 16.dp), Alignment.Center) {
-
         Column {
             Button(onClick = { top -= stepSize }) {
-                Icon(Icons.Default.KeyboardArrowUp, "Up")
+                Icon(Icons.Default.KeyboardArrowUp, null)
             }
             Spacer(Modifier.padding(20.dp))
 
             Button(onClick = { top += stepSize }) {
-                Icon(Icons.Default.KeyboardArrowDown, "Down")
+                Icon(Icons.Default.KeyboardArrowDown, null)
             }
         }
         Row {
             Button(onClick = { left -= stepSize }) {
-                Icon(Icons.Default.KeyboardArrowLeft, "Left")
+                Icon(Icons.Default.KeyboardArrowLeft, null)
             }
             Spacer(Modifier.padding(20.dp))
 
             Button(onClick = { left += stepSize }) {
-                Icon(Icons.Default.KeyboardArrowRight, "Right")
+                Icon(Icons.Default.KeyboardArrowRight, null)
             }
         }
     }
-    Canvas(Modifier.padding(0.dp, 350.dp)) {
-        withTransform({ translate(left, top) }) {
-            drawImage(image = characterR)
-        }
-    }
+    character(left, top)
 }
-
