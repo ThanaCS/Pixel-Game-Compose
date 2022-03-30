@@ -11,34 +11,48 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+
 @Composable
 fun onMove() {
     val stepSize = 50f
     val topSize = 0f
     var left by remember { mutableStateOf(stepSize) }
     var top by remember { mutableStateOf(topSize) }
+    var directions by remember { mutableStateOf(Direction.Right) }
 
     Box(Modifier.size(200.dp).padding(0.dp, 16.dp), Alignment.Center) {
         Column {
-            Button(onClick = { top -= stepSize }) {
+            Button(onClick = {
+                directions = Direction.Up
+                top -= stepSize
+            }) {
                 Icon(Icons.Default.KeyboardArrowUp, null)
             }
             Spacer(Modifier.padding(20.dp))
 
-            Button(onClick = { top += stepSize }) {
+            Button(onClick = {
+                top += stepSize
+                directions = Direction.Down
+            }) {
                 Icon(Icons.Default.KeyboardArrowDown, null)
             }
         }
         Row {
-            Button(onClick = { left -= stepSize }) {
+            Button(onClick = {
+                left -= stepSize
+                directions = Direction.Left
+            }) {
                 Icon(Icons.Default.KeyboardArrowLeft, null)
             }
             Spacer(Modifier.padding(20.dp))
 
-            Button(onClick = { left += stepSize }) {
+            Button(onClick = {
+                left += stepSize
+                directions = Direction.Right
+            }) {
                 Icon(Icons.Default.KeyboardArrowRight, null)
             }
         }
     }
-    character(left, top)
+    character(left, top, directions)
 }

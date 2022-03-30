@@ -6,6 +6,9 @@ object R {
         val characterR by lazy {
             useResource("photos/characterR.png") { loadImageBitmap(it) }
         }
+        val characterL by lazy {
+            useResource("photos/characterL.png") { loadImageBitmap(it) }
+        }
         val environment01 by lazy {
             useResource("photos/env01.png") { loadImageBitmap(it) }
         }

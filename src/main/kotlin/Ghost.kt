@@ -23,8 +23,8 @@ fun ghost() {
     ) {
         Canvas(
             modifier = Modifier
-                .width(70.dp)
-                .height(70.dp)
+                .width(60.dp)
+                .height(60.dp)
                 .padding(16.dp)
                 .scale(pulseScale().value)
         ) {
