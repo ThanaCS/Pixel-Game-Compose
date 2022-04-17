@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun onMove() {
+fun Move() {
     val stepSize = 50f
     val topSize = 0f
     var left by remember { mutableStateOf(stepSize) }
@@ -54,5 +54,5 @@ fun onMove() {
             }
         }
     }
-    character(left, top, directions)
+    Character(left, top, directions)
 }

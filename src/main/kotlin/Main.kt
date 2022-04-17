@@ -25,15 +25,15 @@ fun main() = application {
         resizable = false
     ) {
         gameTheme {
-            background()
-            ghost()
-            onMove()
+            Background()
+            Ghost()
+            Move()
         }
     }
 }
 
 @Composable
-fun background() {
+fun Background() {
     Image(bitmap = environment01, null)
     Box(Modifier.fillMaxSize()) {
         Text(

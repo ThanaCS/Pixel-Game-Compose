@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun character(left: Float, top: Float, directions: Direction) {
+fun Character(left: Float, top: Float, directions: Direction) {
     Canvas(Modifier.padding(0.dp, (Height * 0.4).dp)) {
         translate(left, top) {
             when (directions) {

@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ghost() {
+fun Ghost() {
     Column(
         Modifier
             .fillMaxSize()
@@ -26,7 +26,7 @@ fun ghost() {
                 .width(60.dp)
                 .height(60.dp)
                 .padding(16.dp)
-                .scale(pulseScale().value)
+                .scale(PulseScale().value)
         ) {
 
             val trianglePath = Path().let {
@@ -58,7 +58,7 @@ fun ghost() {
 }
 
 @Composable
-fun pulseScale() = rememberInfiniteTransition().animateFloat(
+fun PulseScale() = rememberInfiniteTransition().animateFloat(
     initialValue = 1f,
     targetValue = 1.2f,
     animationSpec = infiniteRepeatable(
