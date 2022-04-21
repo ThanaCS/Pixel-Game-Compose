@@ -11,14 +11,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun Ghost() {
+    var ghostX = 0f
+    var ghostY = 0f
     Column(
         Modifier
             .fillMaxSize()
-            .padding(250.dp)
+            .offset(250.dp, 250.dp)
             .alpha(0.7f)
     ) {
         Canvas(
@@ -27,6 +31,10 @@ fun Ghost() {
                 .height(60.dp)
                 .padding(16.dp)
                 .scale(PulseScale().value)
+                .onGloballyPositioned {
+                    ghostX = it.positionInRoot().x
+                    ghostY = it.positionInRoot().y
+                }
         ) {
 
             val trianglePath = Path().let {
@@ -43,7 +51,7 @@ fun Ghost() {
             drawPath(
                 path = trianglePath,
                 color = Color.White,
-                style = Stroke(width = 15f, cap = StrokeCap.Round)
+                style = Stroke(width = 10f, cap = StrokeCap.Round)
             )
             drawCircle(
                 color = Color.DarkGray, this.size.width / 16,

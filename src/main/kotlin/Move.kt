@@ -14,17 +14,18 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun Move() {
-    val stepSize = 50f
-    val topSize = 0f
-    var left by remember { mutableStateOf(stepSize) }
-    var top by remember { mutableStateOf(topSize) }
+    val stepSize = 20f
+    var left by remember { mutableStateOf(0f) }
+    var top by remember { mutableStateOf(0f) }
     var directions by remember { mutableStateOf(Direction.Right) }
 
+    Character(left, top, directions)
+    // TODO(Interact)
     Box(Modifier.size(200.dp).padding(0.dp, 16.dp), Alignment.Center) {
         Column {
             Button(onClick = {
-                directions = Direction.Up
                 top -= stepSize
+                directions = Direction.Up
             }) {
                 Icon(Icons.Default.KeyboardArrowUp, null)
             }
@@ -54,5 +55,4 @@ fun Move() {
             }
         }
     }
-    Character(left, top, directions)
 }
