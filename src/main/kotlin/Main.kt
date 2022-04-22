@@ -26,7 +26,6 @@ fun main() = application {
     ) {
         gameTheme {
             Background()
-            Ghost()
             Move()
         }
     }

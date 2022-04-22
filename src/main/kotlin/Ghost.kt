@@ -16,9 +16,8 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Ghost() {
-    var ghostX = 0f
-    var ghostY = 0f
+fun Ghost(ghostOffset: (Offset) -> Unit) {
+
     Column(
         Modifier
             .fillMaxSize()
@@ -30,11 +29,13 @@ fun Ghost() {
                 .width(60.dp)
                 .height(60.dp)
                 .padding(16.dp)
-                .scale(PulseScale().value)
                 .onGloballyPositioned {
-                    ghostX = it.positionInRoot().x
-                    ghostY = it.positionInRoot().y
+                    val ghostX = it.positionInRoot().x
+                    val ghostY = it.positionInRoot().y
+                    ghostOffset(Offset(ghostX, ghostY))
                 }
+                .scale(PulseScale().value)
+
         ) {
 
             val trianglePath = Path().let {

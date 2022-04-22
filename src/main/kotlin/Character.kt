@@ -13,8 +13,7 @@ import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Character(left: Float, top: Float, directions: Direction) {
-    var offset: Offset = Offset.Zero
+fun Character(left: Float, top: Float, directions: Direction, characterOffset: (Offset) -> Unit) {
     Column(
         Modifier
             .fillMaxSize()
@@ -22,10 +21,10 @@ fun Character(left: Float, top: Float, directions: Direction) {
     ) {
         Canvas(Modifier.padding(0.dp)
             .onGloballyPositioned {
-                val characterX = it.positionInRoot().x + left / characterL.width
-                val characterY = it.positionInRoot().y + top / characterL.height
-                offset = Offset(x = characterX, y = characterY)
-                print(offset)
+                val characterX = it.positionInRoot().x + left
+                val characterY = it.positionInRoot().y + top
+                val offset = Offset(x = characterX, y = characterY)
+                characterOffset(offset)
             }
         ) {
             translate(left, top) {
