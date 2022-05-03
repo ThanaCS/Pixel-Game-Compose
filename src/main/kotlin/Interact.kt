@@ -1,8 +1,6 @@
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -11,23 +9,11 @@ import androidx.compose.ui.unit.dp
 import theme.GameTypography
 
 @Composable
-fun Interact(characterOffset: Offset, ghostOffset: Offset) {
-    val radius = 70
-    println(" characterOffset: $characterOffset  ghostOffset $ghostOffset")
-    val messageState = remember { mutableStateOf(false) }
+fun Interact(characterOffset: Offset, ghostOffset: Offset, onOverlapping: (Boolean) -> Unit) {
 
-    if (characterOffset.x in (ghostOffset.x - radius)..(ghostOffset.x + radius) &&
-        characterOffset.y in (ghostOffset.y - radius)..(ghostOffset.y + radius)
-    ) {
-        println("Near!!")
-        messageState.value = true
+    onOverlapping(isOverlapping(characterOffset, ghostOffset))
 
-    } else {
-        println("Far")
-        messageState.value = false
-    }
-
-    if (messageState.value) {
+    if (isNear(characterOffset, ghostOffset)) {
         Text(
             modifier = Modifier.padding(250.dp),
             text = "HI THERE",
@@ -37,3 +23,11 @@ fun Interact(characterOffset: Offset, ghostOffset: Offset) {
         )
     }
 }
+
+fun isNear(characterOffset: Offset, otherObject: Offset, radius: Int = 70) =
+    characterOffset.x in (otherObject.x - radius)..(otherObject.x + radius) &&
+            characterOffset.y in (otherObject.y - radius)..(otherObject.y + radius)
+
+fun isOverlapping(characterOffset: Offset, otherObject: Offset, radius: Int = 60) =
+    characterOffset.x in (otherObject.x - radius)..(otherObject.x + radius) &&
+            characterOffset.y in (otherObject.y - radius)..(otherObject.y + radius)

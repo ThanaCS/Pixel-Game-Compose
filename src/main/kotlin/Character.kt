@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Character(left: Float, top: Float, directions: Direction, characterOffset: (Offset) -> Unit) {
+fun Character(left: Float, top: Float, directions: PlayerDirection, characterOffset: (Offset) -> Unit) {
     Column(
         Modifier
             .fillMaxSize()
@@ -29,10 +29,10 @@ fun Character(left: Float, top: Float, directions: Direction, characterOffset: (
         ) {
             translate(left, top) {
                 when (directions) {
-                    Direction.Left -> drawImage(image = characterL)
-                    Direction.Right -> drawImage(image = characterR)
-                    Direction.Up -> drawImage(image = characterR)
-                    Direction.Down -> drawImage(image = characterL)
+                    PlayerDirection.Left -> drawImage(image = characterL)
+                    PlayerDirection.Right -> drawImage(image = characterR)
+                    PlayerDirection.Up -> drawImage(image = characterR)
+                    PlayerDirection.Down -> drawImage(image = characterL)
                 }
             }
         }
