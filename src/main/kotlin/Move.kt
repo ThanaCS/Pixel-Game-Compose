@@ -1,18 +1,19 @@
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.pointer.pointerInput
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Move() {
     val stepSize = 20f
@@ -21,6 +22,7 @@ fun Move() {
     var directions by remember { mutableStateOf(PlayerDirection.Right) }
     var characterOffset by remember { mutableStateOf(Offset(0f, 0f)) }
     var ghostOffset by remember { mutableStateOf(Offset(0f, 0f)) }
+    val requester = remember { FocusRequester() }
 
     val canMove: MutableMap<PlayerDirection, Boolean> = mutableMapOf(
         PlayerDirection.Left to true,
@@ -49,43 +51,47 @@ fun Move() {
             }
         }
 
-    Box(Modifier.size(200.dp).padding(0.dp, 16.dp), Alignment.Center) {
-        Column {
-            Button(onClick = {
-                if (canMove[PlayerDirection.Up] == true)
-                    top -= stepSize
-                directions = PlayerDirection.Up
-            }) {
-                Icon(Icons.Default.KeyboardArrowUp, null)
+    Box(
+        Modifier
+            .pointerInput(key1 = true) {
+                detectTapGestures(onPress = {
+                    requester.requestFocus()
+                })
             }
-            Spacer(Modifier.padding(20.dp))
-
-            Button(onClick = {
-                if (canMove[PlayerDirection.Down] == true)
-                    top += stepSize
-                directions = PlayerDirection.Down
-            }) {
-                Icon(Icons.Default.KeyboardArrowDown, null)
+            .onKeyEvent {
+                when (it.key) {
+                    Key.DirectionUp -> {
+                        if (canMove[PlayerDirection.Up] == true)
+                            top -= stepSize
+                        directions = PlayerDirection.Up
+                        true
+                    }
+                    Key.DirectionDown -> {
+                        if (canMove[PlayerDirection.Down] == true)
+                            top += stepSize
+                        directions = PlayerDirection.Down
+                        true
+                    }
+                    Key.DirectionLeft -> {
+                        if (canMove[PlayerDirection.Left] == true)
+                            left -= stepSize
+                        directions = PlayerDirection.Left
+                        true
+                    }
+                    Key.DirectionRight -> {
+                        if (canMove[PlayerDirection.Right] == true)
+                            left += stepSize
+                        directions = PlayerDirection.Right
+                        true
+                    }
+                    else -> false
+                }
             }
-        }
-        Row {
-            Button(onClick = {
-                if (canMove[PlayerDirection.Left] == true)
-                    left -= stepSize
-                directions = PlayerDirection.Left
-            }) {
-                Icon(Icons.Default.KeyboardArrowLeft, null)
-            }
-            Spacer(Modifier.padding(20.dp))
-
-            Button(onClick = {
-                if (canMove[PlayerDirection.Right] == true)
-                    left += stepSize
-                directions = PlayerDirection.Right
-            }) {
-                Icon(Icons.Default.KeyboardArrowRight, null)
-            }
-        }
+            .focusRequester(requester)
+            .focusable()
+    )
+    LaunchedEffect(Unit) {
+        requester.requestFocus()
     }
 }
 
