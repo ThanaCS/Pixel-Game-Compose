@@ -16,7 +16,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Move() {
-    val stepSize = 20f
+    val stepSize = 10f
     var left by remember { mutableStateOf(0f) }
     var top by remember { mutableStateOf(0f) }
     var directions by remember { mutableStateOf(PlayerDirection.Right) }
@@ -31,13 +31,8 @@ fun Move() {
         PlayerDirection.Down to true,
     )
 
-    Ghost { offset ->
-        ghostOffset = offset
-    }
-
-    Character(left, top, directions) { offset ->
-        characterOffset = offset
-    }
+    Ghost { offset -> ghostOffset = offset }
+    Character(left, top, directions) { offset -> characterOffset = offset }
 
     if (ghostOffset != Offset(0f, 0f) && characterOffset != Offset(0f, 0f))
         Interact(characterOffset, ghostOffset) { isOverlapped ->

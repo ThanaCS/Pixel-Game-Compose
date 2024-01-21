@@ -28,12 +28,14 @@ fun Character(left: Float, top: Float, directions: PlayerDirection, characterOff
             }
         ) {
             translate(left, top) {
-                when (directions) {
-                    PlayerDirection.Left -> drawImage(image = characterL)
-                    PlayerDirection.Right -> drawImage(image = characterR)
-                    PlayerDirection.Up -> drawImage(image = characterR)
-                    PlayerDirection.Down -> drawImage(image = characterL)
+                var characterImage = characterL
+                characterImage = when (directions) {
+                    PlayerDirection.Left -> characterL
+                    PlayerDirection.Right -> characterR
+                    PlayerDirection.Up -> characterR
+                    PlayerDirection.Down -> characterL
                 }
+                drawImage(image = characterImage)
             }
         }
     }
