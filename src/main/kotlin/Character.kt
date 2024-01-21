@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.dp
@@ -28,8 +29,7 @@ fun Character(left: Float, top: Float, directions: PlayerDirection, characterOff
             }
         ) {
             translate(left, top) {
-                var characterImage = characterL
-                characterImage = when (directions) {
+                val characterImage: ImageBitmap = when (directions) {
                     PlayerDirection.Left -> characterL
                     PlayerDirection.Right -> characterR
                     PlayerDirection.Up -> characterR
