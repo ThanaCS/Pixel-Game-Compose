@@ -2,6 +2,8 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
@@ -16,12 +18,13 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Ghost(ghostOffset: (Offset) -> Unit) {
+fun Ghost(ghostOffset: @Composable (Offset) -> Unit) {
+    var ghostX by remember { mutableStateOf(0f) }
+    var ghostY by remember { mutableStateOf(0f) }
 
     Column(
         Modifier
             .fillMaxSize()
-            .offset(250.dp, 250.dp)
             .alpha(0.7f)
     ) {
         Canvas(
@@ -31,9 +34,8 @@ fun Ghost(ghostOffset: (Offset) -> Unit) {
                 .padding(16.dp)
                 .scale(PulseScale().value)
                 .onGloballyPositioned {
-                    val ghostX = it.positionInRoot().x
-                    val ghostY = it.positionInRoot().y
-                    ghostOffset(Offset(ghostX, ghostY))
+                    ghostX = it.positionInRoot().x
+                    ghostY = it.positionInRoot().y
                 }
 
         ) {
@@ -63,6 +65,8 @@ fun Ghost(ghostOffset: (Offset) -> Unit) {
             )
         }
     }
+    ghostOffset(Offset(ghostX, ghostY))
+
 }
 
 @Composable
