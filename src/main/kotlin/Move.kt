@@ -24,7 +24,7 @@ fun Move() {
     var ghostOffset by remember { mutableStateOf(Offset(0f, 0f)) }
     val requester = remember { FocusRequester() }
 
-    val canMove: MutableMap<PlayerDirection, Boolean> = mutableMapOf(
+    val canMove = mutableMapOf(
         PlayerDirection.Left to true,
         PlayerDirection.Right to true,
         PlayerDirection.Up to true,
@@ -52,8 +52,7 @@ fun Move() {
                 detectTapGestures(onPress = {
                     requester.requestFocus()
                 })
-            }
-            .onKeyEvent {
+            }.onKeyEvent {
                 when (it.key) {
                     Key.DirectionUp -> {
                         if (canMove[PlayerDirection.Up] == true)

@@ -29,15 +29,14 @@ fun Ghost(ghostOffset: (Offset) -> Unit) {
                 .width(60.dp)
                 .height(60.dp)
                 .padding(16.dp)
+                .scale(PulseScale().value)
                 .onGloballyPositioned {
                     val ghostX = it.positionInRoot().x
                     val ghostY = it.positionInRoot().y
                     ghostOffset(Offset(ghostX, ghostY))
                 }
-                .scale(PulseScale().value)
 
         ) {
-
             val trianglePath = Path().let {
                 it.moveTo(this.size.width * .20f, this.size.height * .77f)
                 it.lineTo(this.size.width * .20f, this.size.height * 0.95f)
