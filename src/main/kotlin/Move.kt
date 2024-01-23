@@ -1,4 +1,5 @@
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -36,8 +37,8 @@ fun Move() {
         PlayerDirection.Down to true,
     )
 
-    val gridCol = 11
-    val gridRow = 5
+    Character(left, top, directions) { offset -> characterOffset = offset }
+
     val mapX = "-------*-------" +
             "----*--*-------" +
             "-----*------*--" +
@@ -45,14 +46,13 @@ fun Move() {
             "-----*---------"
 
 
-    val mapIndex = mapX.map { it }
+    val mapIndexes = mapX.map { it }
 
     LazyVerticalGrid(
-        cells = GridCells.Fixed(gridCol),
+        cells = GridCells.Adaptive(150.dp),
         contentPadding = PaddingValues(10.dp),
     ) {
-
-        itemsIndexed(mapIndex) { index, item ->
+        itemsIndexed(mapIndexes) { index, item ->
             if (item == '*') {
                 Box(
                     modifier = Modifier
@@ -68,25 +68,18 @@ fun Move() {
 
     }
 
+
     if (ghostOffset != Offset(0f, 0f) && characterOffset != Offset(0f, 0f))
         Interact(characterOffset, ghostOffset) { isOverlapped ->
             if (isOverlapped) {
                 when (directions) {
-                    PlayerDirection.Left -> canMove.map {
-                        canMove[it.key] = it.key != PlayerDirection.Left
-                    }
-                    PlayerDirection.Right -> canMove.map {
-                        canMove[it.key] = it.key != PlayerDirection.Right
-                    }
+                    PlayerDirection.Left -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Left }
+                    PlayerDirection.Right -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Right }
                     PlayerDirection.Up -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Up }
-                    PlayerDirection.Down -> canMove.map {
-                        canMove[it.key] = it.key != PlayerDirection.Down
-                    }
+                    PlayerDirection.Down -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Down }
                 }
             }
         }
-
-    Character(left, top, directions) { offset -> characterOffset = offset }
 
     Box(
         Modifier
