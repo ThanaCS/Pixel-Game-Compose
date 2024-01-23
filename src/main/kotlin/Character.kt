@@ -24,17 +24,17 @@ fun Character(left: Float, top: Float, directions: PlayerDirection, characterOff
     }
     LaunchedEffect(directions) {
         if (previousDirection.value != directions) {
-            imageAlpha.animateTo(0f, animationSpec = TweenSpec(100, easing = LinearOutSlowInEasing))
+            imageAlpha.animateTo(0f, animationSpec = TweenSpec(20, easing = LinearOutSlowInEasing))
             previousDirection.value = directions
-            imageAlpha.animateTo(1f, animationSpec = TweenSpec(100, easing = LinearOutSlowInEasing))
+            imageAlpha.animateTo(1f, animationSpec = TweenSpec(20, easing = LinearOutSlowInEasing))
         }
     }
     Canvas(Modifier
         .fillMaxSize()
         .offset(20.dp, 250.dp)
         .onGloballyPositioned {
-             characterX = it.positionInRoot().x + left + animatedTopLeft.x
-             characterY = it.positionInRoot().y + top + animatedTopLeft.y
+            characterX = it.positionInRoot().x + left + animatedTopLeft.x
+            characterY = it.positionInRoot().y + top + animatedTopLeft.y
             val offset = Offset(x = characterX, y = characterY)
             characterOffset(offset)
         }

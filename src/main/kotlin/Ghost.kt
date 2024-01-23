@@ -21,7 +21,6 @@ fun Ghost(ghostOffset: (Offset) -> Unit) {
     Column(
         Modifier
             .fillMaxSize()
-            .offset(250.dp, 250.dp)
             .alpha(0.7f)
     ) {
         Canvas(

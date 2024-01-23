@@ -1,6 +1,11 @@
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -11,9 +16,10 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.dp
 
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun Move() {
     val stepSize = 10f
@@ -31,8 +37,37 @@ fun Move() {
         PlayerDirection.Down to true,
     )
 
-    Ghost { offset -> ghostOffset = offset }
     Character(left, top, directions) { offset -> characterOffset = offset }
+
+    val mapX = "-------*-------" +
+            "----*--*-------" +
+            "-----*------*--" +
+            "---------*-----" +
+            "-----*---------"
+
+
+    val mapIndexes = mapX.map { it }
+
+    LazyVerticalGrid(
+        cells = GridCells.Adaptive(150.dp),
+        contentPadding = PaddingValues(10.dp),
+    ) {
+        itemsIndexed(mapIndexes) { index, item ->
+            if (item == '*') {
+                Box(
+                    modifier = Modifier
+                        .padding(4.dp),
+                ) {
+                    Ghost { offset ->
+                        ghostOffset = offset
+                    }
+
+                }
+            }
+        }
+
+    }
+
 
     if (ghostOffset != Offset(0f, 0f) && characterOffset != Offset(0f, 0f))
         Interact(characterOffset, ghostOffset) { isOverlapped ->
@@ -52,7 +87,9 @@ fun Move() {
                 detectTapGestures(onPress = {
                     requester.requestFocus()
                 })
-            }.onKeyEvent {
+            }.focusRequester(requester)
+            .focusable()
+            .onKeyEvent {
                 when (it.key) {
                     Key.DirectionUp -> {
                         if (canMove[PlayerDirection.Up] == true)
@@ -81,8 +118,6 @@ fun Move() {
                     else -> false
                 }
             }
-            .focusRequester(requester)
-            .focusable()
     )
     LaunchedEffect(Unit) {
         requester.requestFocus()
