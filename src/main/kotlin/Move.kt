@@ -1,5 +1,4 @@
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -27,7 +26,7 @@ fun Move() {
     var top by remember { mutableStateOf(0f) }
     var directions by remember { mutableStateOf(PlayerDirection.Right) }
     var characterOffset by remember { mutableStateOf(Offset(0f, 0f)) }
-    var ghostOffset by remember { mutableStateOf(Offset(0f, 0f)) }
+    var ghostsOffset by remember { mutableStateOf(mutableListOf(Offset(0f, 0f))) }
     val requester = remember { FocusRequester() }
 
     val canMove = mutableMapOf(
@@ -59,27 +58,27 @@ fun Move() {
                         .padding(4.dp),
                 ) {
                     Ghost { offset ->
-                        ghostOffset = offset
+                        ghostsOffset.add(offset)
                     }
 
                 }
             }
         }
-
     }
 
-
-    if (ghostOffset != Offset(0f, 0f) && characterOffset != Offset(0f, 0f))
-        Interact(characterOffset, ghostOffset) { isOverlapped ->
-            if (isOverlapped) {
-                when (directions) {
-                    PlayerDirection.Left -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Left }
-                    PlayerDirection.Right -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Right }
-                    PlayerDirection.Up -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Up }
-                    PlayerDirection.Down -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Down }
+    ghostsOffset.forEach { ghostOffset ->
+        if (ghostOffset != Offset(0f, 0f) && characterOffset != Offset(0f, 0f))
+            Interact(characterOffset, ghostOffset) { isOverlapped ->
+                if (isOverlapped) {
+                    when (directions) {
+                        PlayerDirection.Left -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Left }
+                        PlayerDirection.Right -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Right }
+                        PlayerDirection.Up -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Up }
+                        PlayerDirection.Down -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Down }
+                    }
                 }
             }
-        }
+    }
 
     Box(
         Modifier
