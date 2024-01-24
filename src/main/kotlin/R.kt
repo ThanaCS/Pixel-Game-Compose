@@ -12,5 +12,8 @@ object R {
         val environment01 by lazy {
             useResource("photos/env01.png") { loadImageBitmap(it) }
         }
+        val coin by lazy {
+            useResource("photos/coin.png") { loadImageBitmap(it) }
+        }
     }
 }

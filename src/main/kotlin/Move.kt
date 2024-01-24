@@ -16,6 +16,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import util.getComponentOffset
 
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
@@ -27,6 +28,7 @@ fun Move() {
     var directions by remember { mutableStateOf(PlayerDirection.Right) }
     var characterOffset by remember { mutableStateOf(Offset(0f, 0f)) }
     val ghostsOffset by remember { mutableStateOf(mutableListOf(Offset(0f, 0f))) }
+    val coinsOffset by remember { mutableStateOf(mutableListOf(Offset(0f, 0f))) }
     val requester = remember { FocusRequester() }
 
     val canMove = mutableMapOf(
@@ -45,8 +47,16 @@ fun Move() {
     ) {
         itemsIndexed(mapIndexes) { _, item ->
             when (item) {
-                Component.Ghost.value -> Ghost { offset -> ghostsOffset.add(offset) }
-                Component.Coin.value -> {}
+                Component.Ghost.value -> Ghost().getComponentOffset {
+                    ghostsOffset.add(it)
+                }
+
+                Component.Coin.value -> {
+                    Coin().getComponentOffset {
+                        coinsOffset.add(it)
+                    }
+                }
+
                 Component.Tree.value -> {}
             }
         }

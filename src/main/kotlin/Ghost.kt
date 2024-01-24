@@ -13,31 +13,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Ghost(ghostOffset: @Composable (Offset) -> Unit) {
-    var ghostX by remember { mutableStateOf(0f) }
-    var ghostY by remember { mutableStateOf(0f) }
-
+fun Ghost(modifier: Modifier = Modifier): Modifier {
     Column(
         Modifier
             .fillMaxSize()
             .alpha(0.7f)
     ) {
         Canvas(
-            modifier = Modifier
+            modifier = modifier
                 .width(60.dp)
                 .height(60.dp)
                 .padding(16.dp)
                 .scale(PulseScale().value)
-                .onGloballyPositioned {
-                    ghostX = it.positionInRoot().x
-                    ghostY = it.positionInRoot().y
-                }
-
         ) {
             val trianglePath = Path().let {
                 it.moveTo(this.size.width * .20f, this.size.height * .77f)
@@ -65,8 +55,8 @@ fun Ghost(ghostOffset: @Composable (Offset) -> Unit) {
             )
         }
     }
-    ghostOffset(Offset(ghostX, ghostY))
 
+    return modifier
 }
 
 @Composable
