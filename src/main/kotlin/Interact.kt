@@ -11,7 +11,7 @@ import theme.GameTypography
 @Composable
 fun Interact(characterOffset: Offset, ghostOffset: Offset, onOverlapping: (Boolean) -> Unit) {
 
-    onOverlapping(isOverlapping(characterOffset, ghostOffset))
+    onOverlapping(isNear(characterOffset, ghostOffset))
 
     if (isNear(characterOffset, ghostOffset)) {
         Text(
@@ -24,10 +24,6 @@ fun Interact(characterOffset: Offset, ghostOffset: Offset, onOverlapping: (Boole
     }
 }
 
-fun isNear(characterOffset: Offset, otherObject: Offset, radius: Int = 70) =
-    characterOffset.x in (otherObject.x - radius)..(otherObject.x + radius) &&
-            characterOffset.y in (otherObject.y - radius)..(otherObject.y + radius)
-
-fun isOverlapping(characterOffset: Offset, otherObject: Offset, radius: Int = 60) =
+fun isNear(characterOffset: Offset, otherObject: Offset, radius: Int = 50) =
     characterOffset.x in (otherObject.x - radius)..(otherObject.x + radius) &&
             characterOffset.y in (otherObject.y - radius)..(otherObject.y + radius)
