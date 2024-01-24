@@ -26,7 +26,7 @@ fun Move() {
     var top by remember { mutableStateOf(0f) }
     var directions by remember { mutableStateOf(PlayerDirection.Right) }
     var characterOffset by remember { mutableStateOf(Offset(0f, 0f)) }
-    var ghostsOffset by remember { mutableStateOf(mutableListOf(Offset(0f, 0f))) }
+    val ghostsOffset by remember { mutableStateOf(mutableListOf(Offset(0f, 0f))) }
     val requester = remember { FocusRequester() }
 
     val canMove = mutableMapOf(
@@ -37,47 +37,32 @@ fun Move() {
     )
 
     Character(left, top, directions) { offset -> characterOffset = offset }
-
-    val mapX = "-------*-------" +
-            "----*--*-------" +
-            "-----*------*--" +
-            "---------*-----" +
-            "-----*---------"
-
-
-    val mapIndexes = mapX.map { it }
+    val mapIndexes = map1.map { it }
 
     LazyVerticalGrid(
         cells = GridCells.Adaptive(150.dp),
         contentPadding = PaddingValues(10.dp),
     ) {
-        itemsIndexed(mapIndexes) { index, item ->
-            if (item == '*') {
-                Box(
-                    modifier = Modifier
-                        .padding(4.dp),
-                ) {
-                    Ghost { offset ->
-                        ghostsOffset.add(offset)
-                    }
-
-                }
+        itemsIndexed(mapIndexes) { _, item ->
+            when (item) {
+                Component.Ghost.value -> Ghost { offset -> ghostsOffset.add(offset) }
+                Component.Coin.value -> {}
+                Component.Tree.value -> {}
             }
         }
     }
 
     ghostsOffset.forEach { ghostOffset ->
-        if (ghostOffset != Offset(0f, 0f) && characterOffset != Offset(0f, 0f))
-            Interact(characterOffset, ghostOffset) { isOverlapped ->
-                if (isOverlapped) {
-                    when (directions) {
-                        PlayerDirection.Left -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Left }
-                        PlayerDirection.Right -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Right }
-                        PlayerDirection.Up -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Up }
-                        PlayerDirection.Down -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Down }
-                    }
+        Interact(characterOffset, ghostOffset) { isOverlapped ->
+            if (isOverlapped) {
+                when (directions) {
+                    PlayerDirection.Left -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Left }
+                    PlayerDirection.Right -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Right }
+                    PlayerDirection.Up -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Up }
+                    PlayerDirection.Down -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Down }
                 }
             }
+        }
     }
 
     Box(

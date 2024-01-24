@@ -78,4 +78,3 @@ fun PulseScale() = rememberInfiniteTransition().animateFloat(
         repeatMode = RepeatMode.Reverse
     )
 )
-

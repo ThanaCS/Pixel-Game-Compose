@@ -19,9 +19,7 @@ fun Character(left: Float, top: Float, directions: PlayerDirection, characterOff
     var characterX: Float
     var characterY: Float
     val transition = updateTransition(Offset(left, top))
-    val animatedTopLeft by transition.animateOffset { targetValue ->
-        targetValue
-    }
+    val animatedTopLeft by transition.animateOffset { targetValue -> targetValue }
     LaunchedEffect(directions) {
         if (previousDirection.value != directions) {
             imageAlpha.animateTo(0f, animationSpec = TweenSpec(20, easing = LinearOutSlowInEasing))

@@ -1,6 +1,7 @@
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -10,17 +11,17 @@ import theme.GameTypography
 
 @Composable
 fun Interact(characterOffset: Offset, ghostOffset: Offset, onOverlapping: (Boolean) -> Unit) {
-
     onOverlapping(isNear(characterOffset, ghostOffset))
-
     if (isNear(characterOffset, ghostOffset)) {
-        Text(
-            modifier = Modifier.padding(250.dp),
-            text = "HI THERE",
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            style = GameTypography.h6
-        )
+        Box(Modifier.fillMaxSize()) {
+            Text(
+                modifier = Modifier.align(Alignment.BottomStart).padding(60.dp),
+                text = "Hi",
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                style = GameTypography.h3
+            )
+        }
     }
 }
 
