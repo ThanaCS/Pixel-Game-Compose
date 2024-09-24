@@ -47,7 +47,7 @@ fun Move() {
     ) {
         itemsIndexed(mapIndexes) { _, item ->
             when (item) {
-                Component.Ghost.value -> Ghost().getComponentOffset {
+                Component.Ghost.value -> Ghost {
                     ghostsOffset.add(it)
                 }
 
