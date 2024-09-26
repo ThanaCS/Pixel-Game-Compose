@@ -11,9 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 
@@ -21,10 +19,10 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun Move() {
-    val stepSize = 10f
+    val stepSize = 30f
     var left by remember { mutableStateOf(0f) }
     var top by remember { mutableStateOf(0f) }
-    var directions by remember { mutableStateOf(PlayerDirection.Right) }
+    var directions by remember { mutableStateOf(PlayerDirection.Idle) }
     var characterOffset by remember { mutableStateOf(Offset(0f, 0f)) }
     val requester = remember { FocusRequester() }
     val mapIndexes = map1.map { it }.toMutableList()
@@ -49,6 +47,7 @@ fun Move() {
                                 }
                                 PlayerDirection.Up -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Up }
                                 PlayerDirection.Down -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Down }
+                                else -> {}
                             }
                         }
                     }
@@ -63,35 +62,55 @@ fun Move() {
         }
     }
 
-    Box(Modifier.pointerInput(key1 = true) {
-        detectTapGestures(onPress = {
-            requester.requestFocus()
-        })
-    }.focusRequester(requester).focusable().onKeyEvent {
-        when (it.key) {
-            Key.DirectionUp -> {
-                if (canMove[PlayerDirection.Up] == true) top -= stepSize
-                directions = PlayerDirection.Up
-                true
+    Box(
+        Modifier
+            .pointerInput(key1 = true) {
+                detectTapGestures(onPress = {
+                    requester.requestFocus()
+                })
             }
-            Key.DirectionDown -> {
-                if (canMove[PlayerDirection.Down] == true) top += stepSize
-                directions = PlayerDirection.Down
-                true
+            .focusRequester(requester)
+            .focusable()
+            .onKeyEvent { event ->
+                when (event.key) {
+                    Key.DirectionUp -> {
+                        if (event.type == KeyEventType.KeyDown && canMove[PlayerDirection.Up] == true && top > 0) {
+                            top -= stepSize
+                            directions = PlayerDirection.Up
+                            return@onKeyEvent true
+                        }
+                    }
+                    Key.DirectionDown -> {
+                        if (event.type == KeyEventType.KeyDown && canMove[PlayerDirection.Down] == true && top < Height - 50) {
+                            top += stepSize
+                            directions = PlayerDirection.Down
+                            return@onKeyEvent true
+                        }
+                    }
+                    Key.DirectionLeft -> {
+                        if (event.type == KeyEventType.KeyDown && canMove[PlayerDirection.Left] == true && left > 0) {
+                            left -= stepSize
+                            directions = PlayerDirection.Left
+                            return@onKeyEvent true
+                        }
+                    }
+                    Key.DirectionRight -> {
+                        if (event.type == KeyEventType.KeyDown && canMove[PlayerDirection.Right] == true && left < Width - 50) {
+                            left += stepSize
+                            directions = PlayerDirection.Right
+                            return@onKeyEvent true
+                        }
+                    }
+                    else -> {}
+                }
+
+                if (event.type == KeyEventType.KeyUp) {
+                    directions = PlayerDirection.Idle
+                }
+                false
             }
-            Key.DirectionLeft -> {
-                if (canMove[PlayerDirection.Left] == true) left -= stepSize
-                directions = PlayerDirection.Left
-                true
-            }
-            Key.DirectionRight -> {
-                if (canMove[PlayerDirection.Right] == true) left += stepSize
-                directions = PlayerDirection.Right
-                true
-            }
-            else -> false
-        }
-    })
+    )
+
     LaunchedEffect(Unit) {
         requester.requestFocus()
     }

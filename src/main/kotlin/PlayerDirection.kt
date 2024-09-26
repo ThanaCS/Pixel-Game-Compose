@@ -1,1 +1,1 @@
-enum class PlayerDirection { Left, Right, Up, Down }
+enum class PlayerDirection { Left, Right, Up, Down, Idle }
