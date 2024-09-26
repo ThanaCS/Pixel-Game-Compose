@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun Move() {
-    val stepSize = 30f
+    val stepSize = 15f
     var left by remember { mutableStateOf(0f) }
     var top by remember { mutableStateOf(0f) }
     var directions by remember { mutableStateOf(PlayerDirection.Idle) }

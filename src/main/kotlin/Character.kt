@@ -20,6 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
@@ -40,17 +41,19 @@ fun Character(left: Float, top: Float, directions: PlayerDirection, characterOff
     LaunchedEffect(directions) {
         currentIndex = 0
         while (true) {
-            delay(100)
+            delay(80)
             currentIndex = (currentIndex + 1) % characterImages.size
         }
     }
 
-    Canvas(modifier = Modifier.fillMaxSize().offset(left.dp, top.dp).onGloballyPositioned {
+    Canvas(modifier = Modifier.fillMaxSize().padding(0.dp).onGloballyPositioned {
         val characterX = it.positionInRoot().x + left
         val characterY = it.positionInRoot().y + top
         val offset = Offset(x = characterX, y = characterY)
         characterOffset(offset)
     }) {
-        drawImage(characterImages[currentIndex])
+        translate(left, top) {
+            drawImage(characterImages[currentIndex])
+        }
     }
 }
