@@ -40,7 +40,7 @@ fun Character(left: Float, top: Float, directions: PlayerDirection, characterOff
 
     LaunchedEffect(directions) {
         currentIndex = 0
-        while (true) {
+        while (currentIndex < characterImages.size) {
             delay(80)
             currentIndex = (currentIndex + 1) % characterImages.size
         }

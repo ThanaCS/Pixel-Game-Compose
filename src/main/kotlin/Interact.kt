@@ -22,5 +22,6 @@ fun Interact(characterOffset: Offset, ghostOffset: Offset, onOverlapping: (Boole
 }
 
 fun isNear(characterOffset: Offset, otherObject: Offset, radius: Int = 50) =
-    characterOffset.x in (otherObject.x - radius)..(otherObject.x + radius) &&
-            characterOffset.y in (otherObject.y - radius)..(otherObject.y + radius)
+    characterOffset.x in (otherObject.x - radius)..(otherObject.x + radius) && characterOffset.y in
+            (otherObject.y - radius)..(otherObject.y + radius) && characterOffset.x > 0 &&
+            characterOffset.y > 0 && otherObject.y > 0 && otherObject.x > 0

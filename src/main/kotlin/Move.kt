@@ -25,17 +25,18 @@ fun Move() {
     var directions by remember { mutableStateOf(PlayerDirection.Idle) }
     var characterOffset by remember { mutableStateOf(Offset(0f, 0f)) }
     val requester = remember { FocusRequester() }
-    val mapIndexes = map1.map { it }.toMutableList()
+    val mapIndexes = remember { map1.map { it }.toMutableList() }
     val canMove = mutableMapOf<PlayerDirection, Boolean>().apply {
         PlayerDirection.values().forEach { put(it, true) }
     }
+    var coinIndex by remember { mutableStateOf(-1) }
     Character(left, top, directions) { offset -> characterOffset = offset }
 
     LazyVerticalGrid(
         cells = GridCells.Adaptive(150.dp),
-        contentPadding = PaddingValues(10.dp),
+        contentPadding = PaddingValues(50.dp),
     ) {
-        itemsIndexed(mapIndexes) { _, item ->
+        itemsIndexed(mapIndexes) { index, item ->
             when (item) {
                 Component.Ghost.value -> Ghost { offset ->
                     Interact(characterOffset, offset) { isOverlapped ->
@@ -54,7 +55,11 @@ fun Move() {
                 }
 
                 Component.Coin.value -> {
-                    Coin {}
+                    Coin { offset ->
+                            if (isNear(characterOffset, offset)) {
+                                coinIndex = index
+                            }
+                    }
                 }
 
                 Component.Tree.value -> {}
@@ -62,6 +67,10 @@ fun Move() {
         }
     }
 
+    if (coinIndex > -1 && mapIndexes.isNotEmpty()) {
+        mapIndexes.removeAt(coinIndex)
+        mapIndexes.add(coinIndex, '&')
+    }
     Box(
         Modifier
             .pointerInput(key1 = true) {
