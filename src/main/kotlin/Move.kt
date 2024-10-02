@@ -56,20 +56,24 @@ fun Move() {
 
                 Component.Coin.value -> {
                     Coin { offset ->
-                            if (isNear(characterOffset, offset)) {
-                                coinIndex = index
-                            }
+                        if (isNear(characterOffset, offset)) {
+                            coinIndex = index
+                        }
                     }
                 }
 
                 Component.Tree.value -> {}
+
+                Component.CollectedCoin.value -> {
+                    Box(modifier = Modifier.size(20.dp)) // placeholder for the coin to maintain layout
+                }
             }
         }
     }
 
     if (coinIndex > -1 && mapIndexes.isNotEmpty()) {
         mapIndexes.removeAt(coinIndex)
-        mapIndexes.add(coinIndex, '&')
+        mapIndexes.add(coinIndex, Component.CollectedCoin.value)
     }
     Box(
         Modifier
