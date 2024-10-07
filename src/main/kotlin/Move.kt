@@ -41,14 +41,8 @@ fun Move() {
                 Component.Ghost.value -> Ghost { offset ->
                     Interact(characterOffset, offset) { isOverlapped ->
                         if (isOverlapped) {
-                            when (directions) {
-                                PlayerDirection.Left -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Left }
-                                PlayerDirection.Right -> canMove.map {
-                                    canMove[it.key] = it.key != PlayerDirection.Right
-                                }
-                                PlayerDirection.Up -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Up }
-                                PlayerDirection.Down -> canMove.map { canMove[it.key] = it.key != PlayerDirection.Down }
-                                else -> {}
+                            canMove.forEach { (key, _) ->
+                                canMove[key] = key != directions
                             }
                         }
                     }
